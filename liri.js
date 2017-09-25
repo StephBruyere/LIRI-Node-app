@@ -1,3 +1,4 @@
+var fs = require("fs");
 var request = require("request");
 var keys = require("./keys");
 var Twitter = require('twitter');
@@ -34,16 +35,12 @@ if (input === "my-tweets") {
 }
 
 //Spotify
-if (input === "spotify-this-song") {
-	var queryInput = process.argv.splice(3).join(" ");
-		if(!queryInput){
-			queryInput = "Never Gonna Give You Up";
-		}
-		input3 = queryInput;	
+function spotifyRun() {
+
     clientSP.search({ type: 'track', query: input3, limit: 5 }, function(error, data) {
         if (!error) {
             for (i = 0; i < 5; i++) {
-            	console.log('\nSpotify Results: ');
+                console.log('\nSpotify Results: ');
                 console.log("Artist(s): " + data.tracks.items[i].artists[0].name);
                 console.log("Song Name: " + data.tracks.items[i].name);
                 console.log("Song Link: " + data.tracks.items[i].preview_url);
@@ -53,6 +50,27 @@ if (input === "spotify-this-song") {
         }
     });
 }
+
+if (input === "spotify-this-song") {
+	var queryInput = process.argv.splice(3).join(" ");
+    if (!queryInput) {
+        queryInput = "Never Gonna Give You Up";
+    }
+    input3 = queryInput;
+    spotifyRun();
+} 
+
+//FS
+if (input === "do-what-it-says") {
+		fs.readFile("random.txt", "utf8", function(error, data){
+			if (!error) {
+				var dwis = data.split(",");
+				queryInput = (dwis[0], dwis[1]);
+				input3 = queryInput;
+				spotifyRun();
+			}
+		});
+	};
 
 //OMDB
 if (input === "movie-this") {
@@ -75,3 +93,5 @@ if (input === "movie-this") {
             }   
     });
 }
+
+//FS
