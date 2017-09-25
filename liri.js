@@ -10,17 +10,26 @@ var clientSP = new Spotify(spotifyKeys);
 var input = process.argv[2];
 var input2 = process.argv[3];
 
-if (input === "") {
-console.log("\nPlease enter:\n****************** \n (1) node liri my-tweets,\n (2) node liri spotify-this-song, \n (3) node liri movie-this,\n (4) node liri do-what-it-says ");}
+if (!input) {
+    console.log("\nPlease enter:\n****************** \n (1) node liri my-tweets <enter screen name>,\n (2) node liri spotify-this-song <enter song>, \n (3) node liri movie-this <enter movie>,\n (4) node liri do-what-it-says");
+}
 
 //Twitter
 if (input === "my-tweets") {
-	var parameters = {
-	screen_name: 'StephTestAcct01',
-	count:20};
-
+    var queryInput3 = process.argv[3];
+    if (!queryInput3) {
+        parameters = {
+            screen_name: 'StephTestAcct01',
+            count: 20
+        };
+    } else {
+        parameters = {
+            screen_name: process.argv[3],
+            count: 20
+        };
+    }
     client.get('statuses/user_timeline/text', parameters, function(error, tweets, response) {
-        if (!error && response.statusCode === 200) {            
+        if (!error && response.statusCode === 200) {
             for (i = 0; i < tweets.length; i++) {
                 var results =
                     tweets[i].user.screen_name + ": " +
@@ -36,7 +45,6 @@ if (input === "my-tweets") {
 
 //Spotify
 function spotifyRun() {
-
     clientSP.search({ type: 'track', query: input3, limit: 5 }, function(error, data) {
         if (!error) {
             for (i = 0; i < 5; i++) {
@@ -52,25 +60,25 @@ function spotifyRun() {
 }
 
 if (input === "spotify-this-song") {
-	var queryInput = process.argv.splice(3).join(" ");
+    var queryInput = process.argv.splice(3).join(" ");
     if (!queryInput) {
         queryInput = "Never Gonna Give You Up";
     }
     input3 = queryInput;
     spotifyRun();
-} 
+}
 
 //FS
 if (input === "do-what-it-says") {
-		fs.readFile("random.txt", "utf8", function(error, data){
-			if (!error) {
-				var dwis = data.split(",");
-				queryInput = (dwis[0], dwis[1]);
-				input3 = queryInput;
-				spotifyRun();
-			}
-		});
-	};
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        if (!error) {
+            var dwis = data.split(",");
+            queryInput = (dwis[0], dwis[1]);
+            input3 = queryInput;
+            spotifyRun();
+        }
+    });
+};
 
 //OMDB
 if (input === "movie-this") {
@@ -80,16 +88,16 @@ if (input === "movie-this") {
     }
     input4 = queryInput2;
     request("http://www.omdbapi.com/?t=" + input4 + "&y=&plot=short&r=json&tomatoes&apikey=40e9cece", function(error, response, body) {
-            if (!error && response.statusCode === 200) {
-                console.log("\nTitle: " + JSON.parse(body).Title);
-                 console.log("----------------------------------------------------------------------------------");
-                console.log("\nYear Released: " + JSON.parse(body).Year);
-                console.log("\nIMDB Rating: " + JSON.parse(body).imdbRating);
-                console.log("\nRotten Tomatos Rating: " + JSON.parse(body).tomatoRating);
-                console.log("\nCountry Produced: " + JSON.parse(body).Country);
-                console.log("\nLanguages Available: " + JSON.parse(body).Language);
-                console.log("\nPlot: " + JSON.parse(body).Plot);
-                console.log("\nActors & Actresses: " + JSON.parse(body).Actors);
-            }   
+        if (!error && response.statusCode === 200) {
+            console.log("\nTitle: " + JSON.parse(body).Title);
+            console.log("----------------------------------------------------------------------------------");
+            console.log("\nYear Released: " + JSON.parse(body).Year);
+            console.log("\nIMDB Rating: " + JSON.parse(body).imdbRating);
+            console.log("\nRotten Tomatos Rating: " + JSON.parse(body).tomatoRating);
+            console.log("\nCountry Produced: " + JSON.parse(body).Country);
+            console.log("\nLanguages Available: " + JSON.parse(body).Language);
+            console.log("\nPlot: " + JSON.parse(body).Plot);
+            console.log("\nActors & Actresses: " + JSON.parse(body).Actors);
+        }
     });
 }
