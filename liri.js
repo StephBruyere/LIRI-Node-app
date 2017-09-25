@@ -29,7 +29,7 @@ if (input === "my-tweets") {
         };
     }
     client.get('statuses/user_timeline/text', parameters, function(error, tweets, response) {
-        if (!error && response.statusCode === 200) {
+        if (error) { console.log("Not a valid screen name") } else if (!error && response.statusCode === 200) {
             for (i = 0; i < tweets.length; i++) {
                 var results =
                     tweets[i].user.screen_name + ": " +
@@ -46,7 +46,7 @@ if (input === "my-tweets") {
 //Spotify
 function spotifyRun() {
     clientSP.search({ type: 'track', query: input3, limit: 5 }, function(error, data) {
-        if (!error) {
+        if (error) { console.log("Not a valid song title") } else if (!error) {
             for (i = 0; i < 5; i++) {
                 console.log('\nSpotify Results: ');
                 console.log("Artist(s): " + data.tracks.items[i].artists[0].name);
@@ -87,10 +87,12 @@ if (input === "movie-this") {
         queryInput2 = "Mr. Nobody";
     }
     input4 = queryInput2;
-    request("http://www.omdbapi.com/?t=" + input4 + "&y=&plot=short&r=json&tomatoes&apikey=40e9cece", function(error, response, body) {
-        if (!error && response.statusCode === 200) {
+    request("http://www.omdbapi.com/?t=" + input4 + "&y=&plot=short&r=json&tomatoes&apikey=40e9cece", function(err, response, body) {
+        if (err) {
+            console.log("No movies found");
+        } else if (!err && response.statusCode === 200) {
             console.log("\nTitle: " + JSON.parse(body).Title);
-            console.log("----------------------------------------------------------------------------------");
+            console.log("--------------------------------------------------------------------------------");
             console.log("\nYear Released: " + JSON.parse(body).Year);
             console.log("\nIMDB Rating: " + JSON.parse(body).imdbRating);
             console.log("\nRotten Tomatos Rating: " + JSON.parse(body).tomatoRating);
