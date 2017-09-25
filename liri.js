@@ -12,8 +12,7 @@ var input2 = process.argv[3];
 if (input === "") {
 console.log("\nPlease enter:\n****************** \n (1) node liri my-tweets,\n (2) node liri spotify-this-song, \n (3) node liri movie-this,\n (4) node liri do-what-it-says ");}
 
-
-
+//Twitter
 if (input === "my-tweets") {
 	var parameters = {
 	screen_name: 'StephTestAcct01',
@@ -34,8 +33,14 @@ if (input === "my-tweets") {
     });
 }
 
+//Spotify
 if (input === "spotify-this-song") {
-    clientSP.search({ type: 'track', query: input2, limit: 5 }, function(error, data) {
+	var queryInput = process.argv.splice(3).join(" ");
+		if(!queryInput){
+			queryInput = "Never Gonna Give You Up";
+		}
+		input3 = queryInput;	
+    clientSP.search({ type: 'track', query: input3, limit: 5 }, function(error, data) {
         if (!error) {
             for (i = 0; i < 5; i++) {
             	console.log('\nSpotify Results: ');
@@ -49,20 +54,24 @@ if (input === "spotify-this-song") {
     });
 }
 
-
-
-
-
-
-/*
-// We then run the request module on a URL with a JSON
-request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=40e9cece", function(error, response, body) {
-
-  // If there were no errors and the response code was 200 (i.e. the request was successful)...
-  if (!error && response.statusCode === 200) {
-
-    // Then we print out the imdbRating
-    console.log("The movie's rating is: " + JSON.parse(body).imdbRating);
-  }
-});
-*/
+//OMDB
+if (input === "movie-this") {
+    var queryInput2 = process.argv.splice(3).join(" ");
+    if (!queryInput2) {
+        queryInput2 = "Mr. Nobody";
+    }
+    input4 = queryInput2;
+    request("http://www.omdbapi.com/?t=" + input4 + "&y=&plot=short&r=json&tomatoes&apikey=40e9cece", function(error, response, body) {
+            if (!error && response.statusCode === 200) {
+                console.log("\nTitle: " + JSON.parse(body).Title);
+                 console.log("----------------------------------------------------------------------------------");
+                console.log("\nYear Released: " + JSON.parse(body).Year);
+                console.log("\nIMDB Rating: " + JSON.parse(body).imdbRating);
+                console.log("\nRotten Tomatos Rating: " + JSON.parse(body).tomatoRating);
+                console.log("\nCountry Produced: " + JSON.parse(body).Country);
+                console.log("\nLanguages Available: " + JSON.parse(body).Language);
+                console.log("\nPlot: " + JSON.parse(body).Plot);
+                console.log("\nActors & Actresses: " + JSON.parse(body).Actors);
+            }   
+    });
+}
