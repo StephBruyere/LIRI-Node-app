@@ -1,7 +1,7 @@
 {
-  "name": "liri-node-app",
+  "name": "liriapp",
   "version": "1.0.0",
-  "description": "twitter,spotify,omdb, fs\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D \u001b[D\u001b[omdb,fs\u001b[",
+  "description": "application for making twitter, spotify and omdb calls",
   "main": "keys.js",
   "scripts": {
     "test": "test"
@@ -13,14 +13,15 @@
   "keywords": [
     "twitter",
     "spotify",
-    "omdb",
-    "fs",
-    "api"
+    "omdb"
   ],
   "author": "steph bruyere",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/StephBruyere/liri-node-app/issues"
   },
-  "homepage": "https://github.com/StephBruyere/liri-node-app#readme"
+  "homepage": "https://github.com/StephBruyere/liri-node-app#readme",
+  "dependencies": {
+    "package": "^1.0.1"
+  }
 }
